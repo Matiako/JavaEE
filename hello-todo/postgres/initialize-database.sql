@@ -1,0 +1,4 @@
+CREATE ROLE hellotodo WITH LOGIN PASSWORD 'hellotodo';
+
+CREATE DATABASE hellotodo;
+GRANT ALL PRIVILEGES ON DATABASE hellotodo TO hellotodo;

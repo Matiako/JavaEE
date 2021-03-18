@@ -1,5 +1,5 @@
-# Build
-mvn clean package && docker build -t academy.learnprogramming/hello-todo .
+# Local deployment docker-compose
+hello-todo\docker   >>docker-compose up
 
 # RUN
 

@@ -1,0 +1,32 @@
+version: '3.2'
+
+services:
+  hellotodo:
+    image: hellotodo
+    build:
+      context: ../../.
+      dockerfile: hello-todo/docker/Dockerfile
+    container_name: hellotodo
+    ports:
+        - "9600:8080"
+    depends_on:
+      - postgres-hellotodo
+      - flyway-hellotodo
+
+  postgres-hellotodo:
+          image: "postgres:10.5"
+          container_name: "postgres-hellotodo"
+          ports:
+            - "25432:5432"
+          volumes:
+          - ../postgres/initialize-database.sql:/docker-entrypoint-initdb.d/init.sql
+
+  flyway-hellotodo:
+        image: flyway/flyway:6.5.5
+        container_name: flyway-hellotodo
+        command: -configFiles=/flyway/conf/flyway.config -locations=filesystem:/flyway/sql -connectRetries=60 clean migrate info
+        volumes:
+          - ../flyway/conf/flyway.config:/flyway/conf/flyway.config
+          - ../src/main/resources/db/migration:/flyway/sql
+        depends_on:
+         - postgres-hellotodo
